@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div id="root"></div>
+  </body>
+
+  <script
+    src="https://unpkg.com/react@18/umd/react.production.min.js"
+    crossorigin
+  ></script>
+  <script
+    src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+    crossorigin
+  ></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+  <!-- babel는 JSX의 코드를 react js 코드로 변환해서 브라우저에서 실행할 수 있도록 도와줌 -->
+  <script type="text/babel">
+    /* Sub component */
+    function MinutesToHours() {
+      // useState()의 첫번째 argument는 데이터를 변경하기 위해 선언
+      // 두번째 argument는 data값을 변경하기 위해 사용
+      const [amount, setAmount] = React.useState(0);
+      const [inverted, setInverted] = React.useState(false);
+
+      const onChange = (event) => {
+        // setMinutes 함수에 변경된 minutes value를 셋팅
+        setAmount(event.target.value);
+      };
+
+      const reset = () => setAmount(0); // function
+      // const onFlip = () => setFlipped(!flipped);
+
+      const onFlip = () => {
+        reset();
+        // if flip is true then return false
+        setInverted((currect) => !currect); // function
+      };
+
+      /* 시간과 분을 곱하면, 그만큼의 분값을 구할 수 있음 */
+      /* 분에서 시간을 나누면, 그만큼의 시간값을 구할 수 있음 */
+      /* JSX문법 */
+      return (
+        <div>
+          <div>
+            <label htmlFor="minutes">Minutes</label>
+
+            <input
+              value={inverted ? amount * 60 : amount}
+              id="minutes"
+              placeholder="Minutes"
+              type="number"
+              onChange={onChange}
+              disabled={inverted}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="hours">Hours</label>
+
+            <input
+              value={inverted ? amount : Math.round(amount / 60)}
+              id="hours"
+              placeholder="Hours"
+              type="number"
+              disabled={!inverted}
+              onChange={onChange}
+            />
+          </div>
+          <button onClick={reset}>Reset</button>
+          <button onClick={onFlip}>{inverted ? "Turn back" : "Invert"}</button>
+        </div>
+      );
+    }
+
+    /* Sub component */
+    function KmToMiles() {
+      return <h3>KM 2 M</h3>;
+    }
+
+    /* Main component */
+    /* dividing and conquering */
+    function App() {
+      const [index, setIndex] = React.useState("xx");
+      const onSelect = (event) => {
+        setIndex(event.target.value);
+      };
+
+      /* 삼항연산자를 이용하여 select value를 통해 연산을 진행 */
+      return (
+        <div>
+          <h1>Super Converter</h1>
+          <select value={index} onChange={onSelect}>
+            <option value="xx">Select your units</option>
+            <option value="0">Minutes & Hours</option>
+            <option value="1">Km & Miles</option>
+          </select>
+          <hr />
+          {index === "xx" ? `Please select your units` : null}
+          {index === "0" ? <MinutesToHours /> : null}
+          {index === "1" ? <KmToMiles /> : null}
+        </div>
+      );
+    }
+
+    const root = document.getElementById("root");
+    ReactDOM.render(<App />, root);
+  </script>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="root"></div>
+</body>
+
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <!-- babel는 JSX의 코드를 react js 코드로 변환해서 브라우저에서 실행할 수 있도록 도와줌 -->
+    <script type="text/babel">
+        const root = document.getElementById("root");
+
+        // 전체 component가 매번 리렌더링 됨.
+        function App (){
+            // useState()의 첫번째 argument는 데이터를 변경하기 위해 선언
+            // 두번째 argument는 data값을 변경하기 위해 사용
+            const [counter, setCounter] = React.useState(0);
+            const onClick = () => {
+                setCounter(counter + 1); // setCounter함수로 새로운 value를 셋팅
+            };
+            console.log("rendered");
+            console.log(counter);
+            return (
+                <div>
+                    <h3>Total clicks : {counter}</h3>
+                    <button onClick={onClick}>Click me</button>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, root);
+    </script>
+</html>

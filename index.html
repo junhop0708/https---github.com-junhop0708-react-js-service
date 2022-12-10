@@ -1,52 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="root"></div>
-</body>
+  </body>
 
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script
+    src="https://unpkg.com/react@18/umd/react.production.min.js"
+    crossorigin
+  ></script>
+  <script
+    src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
+    crossorigin
+  ></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
-    <!-- babel는 JSX의 코드를 react js 코드로 변환해서 브라우저에서 실행할 수 있도록 도와줌 -->
-    <script type="text/babel">
-        const root = document.getElementById("root");
-        let counter = 0;
+  <!-- babel는 JSX의 코드를 react js 코드로 변환해서 브라우저에서 실행할 수 있도록 도와줌 -->
+  <script type="text/babel">
+    /* props argument는 오직 하나밖에 없음 */
+    function Btn({ text, onClick }) {
+        console.log(text, " was rendered");
+      return (
+        <button
+          onClick={onClick}
+          style={{
+            backgroundColor: "tomato",
+            color: "white",
+            padding: "10px 20px",
+            border: 0,
+            borderRadius: 10,
+          }}
+        >
+          {text}
+        </button>
+      );
+    }
 
-        function countUp(){
-            counter = counter + 1;
-            render();
-        }
+    const MemorizedBtn = React.memo(Btn);
 
-        // React는 연결되어있는 component들을 모두 확인하여, 마지막으로 변경되는 component의 value만 인지할 수 있음
-        // vanilla JS는 모든 element들을 같이 변경시킴
-        function render(){
-            ReactDOM.render(<Container />, root); // Container를 리렌더링함으로써 Total clicks 의 counter 증가를 보여줌
-        }
+    function App() {
+      const [value, setValue] = React.useState("Save Changes");
+      const changeValue = () => setValue("Revert Changes");
 
-        function Container (){
-            return (
-                <div>
-                    <h3>Total clicks : {counter}</h3>
-                    <button onClick={countUp}>Click me</button>
-                </div>
-            );
-        }
-        // const Container = () => (
-        //     <div>
-        //         <h3>Total clicks : {counter}</h3>
-        //         <button onClick={countUp}>Click me</button>
-        //     </div>
-        // )
+      return (
+        <div>
+          <MemorizedBtn text={value} onClick={changeValue} />
+          <MemorizedBtn text="Continue" />
+        </div>
+      );
+    }
 
-        render();
-        // ReactDOM.render(<Container />, root); // 페이지 처음 로딩했을 때 바로 실행
-    </script>
+    const root = document.getElementById("root");
+    ReactDOM.render(<App />, root);
+  </script>
 </html>
