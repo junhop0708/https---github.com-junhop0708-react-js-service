@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="root"></div>
+</body>
+
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <!-- babel는 JSX의 코드를 react js 코드로 변환해서 브라우저에서 실행할 수 있도록 도와줌 -->
+    <script type="text/babel">
+        const root = document.getElementById("root");
+        let counter = 0;
+
+        function countUp(){
+            counter = counter + 1;
+
+            // counter의 값이 증가할 때마다, react DOM을 리렌더링을 해주어야 함
+            // 그래야만 증가된 값을 UI에 보여줄 수 있음
+            ReactDOM.render(<Container />, root);
+        }
+
+        const Container = () => (
+            <div>
+                <h3>Total clicks: {counter}</h3>
+                <button onClick={countUp}>Click me</button>    
+            </div>
+        );
+
+        ReactDOM.render(<Container />, root); // 최초 렌더링
+    </script>
+</html>
