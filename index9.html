@@ -20,44 +20,38 @@
     crossorigin
   ></script>
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-  <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
 
   <!-- babel는 JSX의 코드를 react js 코드로 변환해서 브라우저에서 실행할 수 있도록 도와줌 -->
   <script type="text/babel">
     /* props argument는 오직 하나밖에 없음 */
-    /* 정의되지 않은 값에 parameter에 default value 설정 가능 */
-    function Btn({ text, fontSize = 12 }) {
+    function Btn({ text, onClick }) {
+        console.log(text, " was rendered");
       return (
         <button
+          onClick={onClick}
           style={{
             backgroundColor: "tomato",
             color: "white",
             padding: "10px 20px",
             border: 0,
             borderRadius: 10,
-            fontSize,
           }}
         >
           {text}
-      </button>
+        </button>
       );
     }
 
-    /* explain to react */
-    Btn.propTypes = {
-      text: PropTypes.string.isRequired,
-      fontSize: PropTypes.number,
-    }
+    const MemorizedBtn = React.memo(Btn);
 
-    /* props는 그 안에 설정하는 argument를 통해서 component에 데이터를 보내기 위한 통로 */
-    /* props들은 렌더링이 되고 있는 Btn의 component의 부모로부터 전달이 되고 있음 */
-    /* 첫번째 Btn의 두개의 prop을 두번째 Btn은 한개의 prop을 설정 */
-    /* props는 Object이며, props.text, props,fontSize로 설정 가능 */
     function App() {
+      const [value, setValue] = React.useState("Save Changes");
+      const changeValue = () => setValue("Revert Changes");
+
       return (
         <div>
-          <Btn text="Save Changes" fontSize={18} />
-          <Btn text={"Continue"} />
+          <MemorizedBtn text={value} onClick={changeValue} />
+          <MemorizedBtn text="Continue" />
         </div>
       );
     }
